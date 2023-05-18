@@ -1,0 +1,45 @@
+DROP TABLE  IF EXISTS peliculas_tags;
+DROP TABLE IF EXISTS tags;
+DROP TABLE IF EXISTS peliculas;
+
+CREATE TABLE peliculas(pelicula_id INT PRIMARY KEY NOT NULL UNIQUE, nombre VARCHAR (255) NOT NULL, año INT NOT NULL);
+CREATE TABLE  tags (tag_id INT PRIMARY KEY NOT NULL, etiqueta VARCHAR NOT NULL);
+CREATE TABLE  peliculas_tags (pt_id INT PRIMARY KEY NOT NULL, pelicula_id INT NOT NULL, tag_id INT);	
+
+ALTER TABLE peliculas_tags ADD constraint fk_id foreign key (pelicula_id) references peliculas (pelicula_id); 
+ALTER TABLE peliculas_tags ADD constraint fk_pt foreign key (tag_id) references tags (tag_id); 
+
+SELECT * FROM peliculas;
+SELECT * FROM tags;
+SELECT * FROM peliculas_tags;
+
+INSERT INTO peliculas VALUES (1, 'the_Lord_of_the_Rings_The_Fellowship_of_the_Ring', 2001);
+INSERT INTO peliculas VALUES (2,'suzume_no_tojimari', 2022);
+INSERT INTO peliculas VALUES (3,'titanic', 1998);
+INSERT INTO peliculas VALUES (4,'Fight_Club', 2011);
+INSERT INTO peliculas VALUES (5,'The_Conjuring', 2013);
+
+INSERT INTO tags VALUES (1, 'epica');
+INSERT INTO tags VALUES (2, 'horror');
+INSERT INTO tags VALUES (3, 'animación');
+INSERT INTO tags VALUES (4, 'fantasia');
+INSERT INTO tags VALUES (5, 'acción');
+
+INSERT INTO peliculas_tags VALUES (1,1,1);
+INSERT INTO peliculas_tags VALUES (2,1,4);
+INSERT INTO peliculas_tags VALUES (3,1,5);
+INSERT INTO peliculas_tags VALUES (4,2,3);
+INSERT INTO peliculas_tags VALUES (5,2,4);
+INSERT INTO peliculas_tags VALUES (6,4,5);
+INSERT INTO peliculas_tags VALUES (7,5,2);
+INSERT INTO peliculas_tags VALUES (8,3);
+
+
+SELECT pelicula_id, count(tag_id) FROM peliculas_tags GROUP BY pelicula_id ORDER by count desc;
+
+
+
+
+
+
+
