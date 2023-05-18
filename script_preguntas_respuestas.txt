@@ -1,0 +1,53 @@
+DROP TABLE  IF EXISTS respuestas;
+DROP TABLE  IF EXISTS preguntas;
+DROP TABLE  IF EXISTS usuarios;
+
+--requerimiento 4
+CREATE TABLE  preguntas(pregunta_id INT PRIMARY KEY NOT null, pregunta VARCHAR (255) NOT NULL, respuesta_correcta VARCHAR);
+CREATE TABLE  usuarios(usuario_id INT PRIMARY KEY NOT NULL, nombre VARCHAR (255) NOT NULL, edad INT CHECK (edad >= 18));
+CREATE TABLE  respuestas (respuesta_id INT PRIMARY KEY NOT null, respuesta VARCHAR (255) NOT NULL, u_id INT not null, p_id INT NOT NULL);
+						 
+ALTER TABLE respuestas ADD constraint fk_usuario_id foreign key (u_id) references usuarios (usuario_id); 
+ALTER TABLE respuestas ADD constraint fk_pregunta_id foreign key (p_id) references preguntas (pregunta_id); 
+ALTER TABLE usuarios ADD email VARCHAR UNIQUE; --requerimiento 10
+
+SELECT * FROM preguntas;
+SELECT * FROM usuarios;
+SELECT * FROM respuestas;
+
+-- requerimiento 5
+INSERT INTO preguntas VALUES (1, '¿cuanto es 2+2=','4');
+INSERT INTO preguntas VALUES (2, '¿cual es el mes actual','Mayo');
+INSERT INTO preguntas VALUES (3, '¿país en el que estas?','Chile');
+INSERT INTO preguntas VALUES (4, '¿color del cielo?','azul');
+INSERT INTO preguntas VALUES (5, '¿que día es hoy?','miercoles');
+
+INSERT INTO usuarios VALUES (1, 'Nathalie', 35);
+INSERT INTO usuarios VALUES (2, 'Felipe', 18);
+INSERT INTO usuarios VALUES (3, 'Franco', 20);
+INSERT INTO usuarios VALUES (4, 'Pabla', 35);
+INSERT INTO usuarios VALUES (5, 'Elena', 60);
+
+INSERT INTO respuestas  VALUES (1, '4', 1, 1);
+INSERT INTO respuestas  VALUES (2, 'Mayo', 2, 2);
+INSERT INTO respuestas  VALUES (3, '4', 3, 1);
+INSERT INTO respuestas  VALUES (4, 'azul', 5, 4);
+INSERT INTO respuestas  VALUES (5, 'jueves', 4, 5);
+INSERT INTO respuestas  VALUES (6, 'argentina', 4,3);
+
+--reuerimiento 6
+SELECT u_id, respuesta_id, p_id FROM preguntas JOIN respuestas ON respuesta = respuesta_correcta;
+SELECT count (u_id) usuarios FROM preguntas JOIN respuestas ON respuesta = respuesta_correcta ;
+SELECT respuesta_id, p_id FROM preguntas JOIN respuestas ON respuesta = respuesta_correcta;
+
+
+--requerimiento7
+SELECT count (pregunta_id) pregunta FROM preguntas JOIN respuestas ON respuesta = respuesta_correcta join usuarios on usuario_id=u_id;
+SELECT pregunta, u_id, p_id FROM preguntas JOIN respuestas ON respuesta = respuesta_correcta join usuarios on usuario_id=u_id;
+SELECT * FROM respuestas WHERE p_id=1;
+SELECT * FROM respuestas WHERE p_id=2;
+SELECT * FROM respuestas WHERE p_id=4;
+
+--requerrimiento 8
+Truncate table usuarios cascade;--pero esta elimina toda la tabla y las tablas relacionadas con un FK
+DELETE * from usuarios where usuario_id=1;
